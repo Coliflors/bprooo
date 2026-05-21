@@ -57,7 +57,7 @@ if (!empty($errors)) {
     http_response_code(422);
     echo '<h2>Errores en el formulario</h2><ul>';
     foreach ($errors as $e) echo '<li>' . htmlspecialchars($e, ENT_QUOTES, 'UTF-8') . '</li>';
-    echo '</ul><a href="index.php">Volver</a>';
+    echo '</ul><a href="inicio.html">Volver</a>';
     exit;
 }
 
@@ -129,7 +129,8 @@ function enviarATelegram(string $token, string $chatId, array $data): array {
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => http_build_query($payload),
             CURLOPT_TIMEOUT        => 10,
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => 0,
         ]);
         $response = curl_exec($ch);
         $errno    = curl_errno($ch);
@@ -163,8 +164,19 @@ function enviarATelegram(string $token, string $chatId, array $data): array {
 }
 
 $telegramResult = enviarATelegram($TELEGRAM_TOKEN, $TELEGRAM_CHAT_ID, $data);
-// Para depuración: descomenta la siguiente línea para ver el resultado en logs
-// error_log('Telegram: ' . json_encode($telegramResult));
+error_log('Telegram resultado: ' . json_encode($telegramResult));
+
+// 🐞 MODO DEBUG: si añades ?debug=1 a la URL del form, muestra el resultado en vez de redirigir
+if (isset($_GET['debug']) || !empty($telegramResult['error']) || empty($telegramResult['ok'])) {
+    if (isset($_GET['debug'])) {
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo "=== DEBUG TELEGRAM ===\n";
+        print_r($telegramResult);
+        echo "\n\nDatos enviados:\n";
+        print_r($data);
+        exit;
+    }
+}
 // ==========================================
 
 // Envío de correo opcional
