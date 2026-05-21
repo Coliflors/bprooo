@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, initial-scale=1.0" />
+<title>Sorteo Gratuito - Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; }
+  body {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    background: #000;
+    overflow-x: hidden;
+  }
+
+  /* === FULL HD BANNER 1920 x 1080 === */
+  .banner {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    background: radial-gradient(ellipse at center, #0a4d1f 0%, #062612 60%, #000 100%);
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  /* Glow rings behind speedometer */
+  .glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1400px;
+    height: 1400px;
+    background: radial-gradient(circle, rgba(26,168,74,0.35) 0%, rgba(26,168,74,0.1) 40%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  /* Speedometer */
+  .speedometer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 1100px;
+    height: 1100px;
+    z-index: 2;
+  }
+  .speedometer svg { width: 100%; height: 100%; filter: drop-shadow(0 0 60px rgba(26,255,100,0.6)); }
+
+  /* Center bag icon */
+  .bag-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    z-index: 5;
+    width: 220px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+  }
+  .bag-icon svg { width: 140px; height: 140px; filter: drop-shadow(0 0 30px rgba(0,255,120,0.9)); }
+
+  /* Cars row */
+  .cars {
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+    right: 0;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 40px;
+    z-index: 4;
+  }
+  .car {
+    width: 360px;
+    height: 220px;
+    position: relative;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.8));
+  }
+  .car.center { width: 480px; height: 280px; transform: translateY(-20px); z-index: 6; }
+
+  /* Headline */
+  .headline {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+  }
+  .headline .small {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 14px;
+  }
+  .headline .big {
+    color: #fff;
+    font-size: 92px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.7);
+  }
+  .headline .big span {
+    color: #1aff64;
+    text-shadow: 0 0 40px rgba(26,255,100,0.7);
+  }
+  .headline .free {
+    display: inline-block;
+    margin-top: 18px;
+    background: linear-gradient(135deg, #1aff64, #0f8a3c);
+    color: #062612;
+    font-size: 28px;
+    font-weight: 800;
+    padding: 10px 28px;
+    border-radius: 999px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    box-shadow: 0 0 40px rgba(26,255,100,0.6);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 110px;
+    background: linear-gradient(90deg, #0f8a3c 0%, #1aa84a 50%, #0f8a3c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
+    box-shadow: 0 -10px 40px rgba(26,168,74,0.5);
+  }
+  .bottom-bar .text {
+    color: #fff;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .bottom-bar .text strong { color: #fff700; }
+
+  /* CTA Button floating */
+  .cta {
+    position: absolute;
+    right: 80px;
+    top: 80px;
+    background: #fff700;
+    color: #062612;
+    padding: 22px 44px;
+    border-radius: 14px;
+    font-weight: 900;
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 12px 40px rgba(255,247,0,0.4), 0 0 0 6px rgba(255,247,0,0.15);
+    transform: rotate(-4deg);
+    z-index: 11;
+  }
+  .cta small { display:block; font-size: 14px; font-weight: 700; opacity: 0.7; margin-bottom: 4px; letter-spacing: 3px;}
+
+  /* Decorative arrows (like reference image) */
+  .arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    z-index: 1;
+  }
+  .arrow.left {
+    top: 30%; left: 4%;
+    border-top: 180px solid transparent;
+    border-bottom: 180px solid transparent;
+    border-right: 220px solid rgba(26,168,74,0.25);
+  }
+  .arrow.right {
+    top: 35%; right: 4%;
+    border-top: 180px solid transparent;
+    border-bottom: 180px solid transparent;
+    border-left: 220px solid rgba(141,198,63,0.25);
+  }
+
+  /* Sparkles */
+  .spark {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 4px rgba(255,255,255,0.8);
+    z-index: 3;
+  }
+
+  /* Responsive scaling so 1920x1080 fits any screen */
+  @media (max-width: 1920px) {
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .banner { transform: scale(calc(100vw / 1920)); transform-origin: center center; }
+    html, body { height: 100vh; overflow: hidden; }
+  }
+</style>
+</head>
+<body>
+  <div class="banner" id="banner">
+
+    <!-- Decorative arrows -->
+    <div class="arrow left"></div>
+    <div class="arrow right"></div>
+
+    <!-- Glow -->
+    <div class="glow"></div>
+
+    <!-- Headline -->
+    <div class="headline">
+      <div class="small">Banpro · Promoción Exclusiva</div>
+      <div class="big">ACELERA Y <span>GANA</span></div>
+      <div class="free">Sorteo 100% Gratuito</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <small>PARTICIPA YA</small>
+      ¡Inscríbete Gratis!
+    </div>
+
+    <!-- Speedometer SVG -->
+    <div class="speedometer">
+      <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0a4d1f"/>
+            <stop offset="50%" stop-color="#1aff64"/>
+            <stop offset="100%" stop-color="#fff700"/>
+          </linearGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Outer ring -->
+        <circle cx="300" cy="300" r="270" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+        <circle cx="300" cy="300" r="250" fill="none" stroke="rgba(26,255,100,0.3)" stroke-width="1"/>
+
+        <!-- Arc gauge -->
+        <path d="M 90 380 A 220 220 0 1 1 510 380"
+              fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20" stroke-linecap="round"/>
+        <path d="M 90 380 A 220 220 0 1 1 510 380"
+              fill="none" stroke="url(#grad1)" stroke-width="14" stroke-linecap="round"
+              stroke-dasharray="950" stroke-dashoffset="180" filter="url(#glow)"/>
+
+        <!-- Tick marks and numbers -->
+        <g font-family="Montserrat, sans-serif" font-weight="700" fill="#fff" text-anchor="middle">
+          <text x="90" y="420" font-size="22">0</text>
+          <text x="120" y="240" font-size="22">40</text>
+          <text x="220" y="120" font-size="22">80</text>
+          <text x="300" y="90" font-size="22">120</text>
+          <text x="380" y="120" font-size="22">160</text>
+          <text x="480" y="240" font-size="22">200</text>
+          <text x="510" y="420" font-size="22">240</text>
+        </g>
+
+        <!-- Needle -->
+        <g transform="rotate(45 300 300)" filter="url(#glow)">
+          <line x1="300" y1="300" x2="300" y2="110" stroke="#1aff64" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="300" cy="300" r="18" fill="#1aff64"/>
+          <circle cx="300" cy="300" r="9" fill="#062612"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Center icon: shopping bag with check -->
+    <div class="bag-icon">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 35 L75 35 L70 90 L30 90 Z" fill="none" stroke="#1aff64" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M35 35 Q35 18 50 18 Q65 18 65 35" fill="none" stroke="#1aff64" stroke-width="5"/>
+        <path d="M38 60 L46 68 L62 50" fill="none" stroke="#1aff64" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Cars (stylized SVG) -->
+    <div class="cars">
+      <!-- Left SUV -->
+      <svg class="car" viewBox="0 0 360 220">
+        <defs>
+          <linearGradient id="carBody1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f5f5f5"/><stop offset="1" stop-color="#a8a8a8"/>
+          </linearGradient>
+          <linearGradient id="window1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1a1a1a"/><stop offset="1" stop-color="#3a3a3a"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="180" cy="195" rx="170" ry="10" fill="rgba(0,0,0,0.5)"/>
+        <path d="M30 150 Q40 90 110 80 L240 75 Q300 80 330 130 L335 165 Q335 175 325 175 L35 175 Q25 175 25 165 Z" fill="url(#carBody1)"/>
+        <path d="M70 150 Q80 100 130 95 L230 92 Q270 95 290 140 Z" fill="url(#window1)"/>
+        <line x1="170" y1="92" x2="170" y2="148" stroke="#666" stroke-width="2"/>
+        <circle cx="90" cy="180" r="22" fill="#111"/><circle cx="90" cy="180" r="10" fill="#444"/>
+        <circle cx="270" cy="180" r="22" fill="#111"/><circle cx="270" cy="180" r="10" fill="#444"/>
+        <rect x="305" y="140" width="20" height="10" rx="3" fill="#fff700"/>
+      </svg>
+
+      <!-- Center pickup truck (highlighted) -->
+      <svg class="car center" viewBox="0 0 480 280">
+        <defs>
+          <linearGradient id="carBody2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#9a9a9a"/>
+          </linearGradient>
+          <linearGradient id="window2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0a0a0a"/><stop offset="1" stop-color="#2a2a2a"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="240" cy="250" rx="230" ry="14" fill="rgba(0,0,0,0.6)"/>
+        <!-- Body -->
+        <path d="M30 190 L30 150 Q40 90 130 80 L240 75 Q280 78 300 110 L300 150 L450 150 L455 200 Q455 215 440 215 L40 215 Q25 215 25 200 Z" fill="url(#carBody2)"/>
+        <!-- Cabin window -->
+        <path d="M75 145 Q85 100 140 95 L240 92 Q270 95 285 130 L285 145 Z" fill="url(#window2)"/>
+        <line x1="180" y1="92" x2="180" y2="145" stroke="#666" stroke-width="2"/>
+        <!-- Bed -->
+        <rect x="305" y="155" width="140" height="55" fill="#888" stroke="#555" stroke-width="2"/>
+        <!-- Wheels -->
+        <circle cx="110" cy="220" r="32" fill="#0a0a0a"/><circle cx="110" cy="220" r="14" fill="#3a3a3a"/>
+        <circle cx="370" cy="220" r="32" fill="#0a0a0a"/><circle cx="370" cy="220" r="14" fill="#3a3a3a"/>
+        <!-- Headlight -->
+        <rect x="420" y="170" width="30" height="14" rx="3" fill="#fff700"/>
+        <!-- Grille -->
+        <rect x="430" y="190" width="22" height="10" rx="2" fill="#333"/>
+      </svg>
+
+      <!-- Right SUV -->
+      <svg class="car" viewBox="0 0 360 220">
+        <defs>
+          <linearGradient id="carBody3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f0f0f0"/><stop offset="1" stop-color="#9c9c9c"/>
+          </linearGradient>
+          <linearGradient id="window3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#161616"/><stop offset="1" stop-color="#383838"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="180" cy="195" rx="170" ry="10" fill="rgba(0,0,0,0.5)"/>
+        <path d="M30 150 Q40 95 110 85 L235 80 Q295 85 325 130 L335 165 Q335 175 325 175 L35 175 Q25 175 25 165 Z" fill="url(#carBody3)"/>
+        <path d="M70 148 Q80 105 130 100 L225 97 Q265 100 285 140 Z" fill="url(#window3)"/>
+        <line x1="170" y1="98" x2="170" y2="146" stroke="#666" stroke-width="2"/>
+        <circle cx="90" cy="180" r="22" fill="#111"/><circle cx="90" cy="180" r="10" fill="#444"/>
+        <circle cx="270" cy="180" r="22" fill="#111"/><circle cx="270" cy="180" r="10" fill="#444"/>
+        <rect x="305" y="140" width="20" height="10" rx="3" fill="#fff700"/>
+      </svg>
+    </div>
+
+    <!-- Sparkles -->
+    <div class="spark" style="top:18%;left:20%;"></div>
+    <div class="spark" style="top:25%;right:25%;width:8px;height:8px;"></div>
+    <div class="spark" style="top:55%;left:12%;"></div>
+    <div class="spark" style="top:60%;right:15%;width:5px;height:5px;"></div>
+    <div class="spark" style="top:40%;left:48%;width:4px;height:4px;"></div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+      <div class="text">Acelera con tus tarjetas y participa por <strong>premios increíbles</strong></div>
+    </div>
+
+  </div>
+
+  <script>
+    // Export hint: open in browser, screenshot at 1920x1080, or use Puppeteer/Chrome headless to render PNG.
+    // For PNG export run in DevTools console:
+    //   document.querySelector('.banner').scrollIntoView();
+    //   then File > Save / or use puppeteer page.screenshot({clip:{x:0,y:0,width:1920,height:1080}})
+  </script>
+</body>
+</html>

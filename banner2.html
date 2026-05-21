@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sorteo Gratuito - Banner Animado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #050a07;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  /* Hide scrollbars (cross-browser) */
+  body::-webkit-scrollbar { display: none; }
+  body { scrollbar-width: none; -ms-overflow-style: none; }
+
+  /* === BANNER fills container === */
+  .banner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #0e6b2c 0%, #073819 55%, #020806 100%);
+  }
+  /* When opened standalone, give it nice constraints */
+  @media (min-width: 1px) {
+    body.standalone .banner {
+      max-width: 1100px;
+      aspect-ratio: 11 / 6;
+      height: auto;
+      border-radius: 18px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(26,255,100,0.15);
+    }
+  }
+
+  /* Animated background grid */
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,255,100,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,255,100,0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 14s linear infinite;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+  @keyframes gridMove {
+    from { background-position: 0 0; }
+    to   { background-position: 60px 60px; }
+  }
+
+  /* Pulsing glow */
+  .glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 90%; height: 130%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(26,255,100,0.45) 0%, rgba(26,255,100,0.08) 35%, transparent 65%);
+    filter: blur(30px);
+    animation: pulse 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+    50%     { opacity: 1;   transform: translate(-50%,-50%) scale(1.08); }
+  }
+
+  /* Decorative side arrows */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    width: 0; height: 0;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    animation: arrowFloat 3s ease-in-out infinite;
+  }
+  .arrow.left {
+    left: 2%;
+    border-top: 80px solid transparent;
+    border-bottom: 80px solid transparent;
+    border-right: 100px solid rgba(26,168,74,0.35);
+  }
+  .arrow.right {
+    right: 2%;
+    border-top: 80px solid transparent;
+    border-bottom: 80px solid transparent;
+    border-left: 100px solid rgba(141,198,63,0.35);
+    animation-delay: 1.5s;
+  }
+  @keyframes arrowFloat {
+    0%,100% { transform: translateY(-50%) translateX(0); opacity: 0.4; }
+    50%     { transform: translateY(-50%) translateX(8px); opacity: 0.7; }
+  }
+  .arrow.right { animation-name: arrowFloatR; }
+  @keyframes arrowFloatR {
+    0%,100% { transform: translateY(-50%) translateX(0); opacity: 0.4; }
+    50%     { transform: translateY(-50%) translateX(-8px); opacity: 0.7; }
+  }
+
+  /* Headline */
+  .headline {
+    position: absolute;
+    top: 7%;
+    left: 4%; right: 4%;
+    text-align: center;
+    z-index: 10;
+    animation: fadeDown 1s ease-out both;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .headline .big {
+    color: #fff;
+    font-size: clamp(26px, 5.2vw, 58px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+  .headline .big span {
+    color: #1aff64;
+    text-shadow: 0 0 25px rgba(26,255,100,0.9);
+    animation: glowText 2s ease-in-out infinite;
+  }
+  @keyframes glowText {
+    0%,100% { text-shadow: 0 0 20px rgba(26,255,100,0.6); }
+    50%     { text-shadow: 0 0 40px rgba(26,255,100,1), 0 0 60px rgba(26,255,100,0.5); }
+  }
+  .headline .free {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #1aff64, #0f8a3c);
+    color: #062612;
+    font-size: clamp(11px, 1.3vw, 14px);
+    font-weight: 800;
+    padding: 6px 18px;
+    border-radius: 999px;
+    letter-spacing: 3px;
+    box-shadow: 0 0 25px rgba(26,255,100,0.5);
+  }
+
+  /* Countdown */
+  .countdown {
+    position: absolute;
+    top: 4%;
+    right: 4%;
+    background: rgba(255,247,0,0.97);
+    color: #062612;
+    padding: 8px 14px;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(255,247,0,0.35);
+    z-index: 11;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    animation: ctaWobble 3s ease-in-out infinite;
+  }
+  .countdown .label {
+    display: block;
+    font-size: clamp(8px, 0.9vw, 10px);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.75;
+    margin-bottom: 2px;
+  }
+  .countdown .time {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: baseline;
+    font-weight: 900;
+    font-size: clamp(13px, 1.6vw, 18px);
+  }
+  .countdown .unit { display: flex; flex-direction: column; align-items: center; }
+  .countdown .unit small {
+    font-size: clamp(7px, 0.7vw, 9px);
+    font-weight: 700;
+    opacity: 0.65;
+    letter-spacing: 1px;
+  }
+  .countdown .sep { opacity: 0.4; align-self: center; transform: translateY(-3px); }
+  @keyframes ctaWobble {
+    0%,100% { transform: rotate(-2deg) scale(1); }
+    50%     { transform: rotate(2deg) scale(1.04); }
+  }
+
+  /* Speedometer */
+  .speedometer {
+    position: absolute;
+    top: 52%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    aspect-ratio: 1 / 1;
+    z-index: 3;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(-50%, -50%); }
+    50%     { transform: translate(-50%, -53%); }
+  }
+  .speedometer svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 0 30px rgba(26,255,100,0.5));
+  }
+
+  /* Animate gauge fill */
+  .gauge-arc {
+    stroke-dasharray: 950;
+    stroke-dashoffset: 950;
+    animation: fillArc 2.5s 0.5s ease-out forwards, arcPulse 3s 3s ease-in-out infinite;
+  }
+  @keyframes fillArc {
+    to { stroke-dashoffset: 180; }
+  }
+  @keyframes arcPulse {
+    0%,100% { stroke-dashoffset: 180; }
+    50%     { stroke-dashoffset: 250; }
+  }
+
+  /* Needle animation */
+  .needle {
+    transform-origin: 300px 300px;
+    transform: rotate(-130deg);
+    animation: needleSweep 2.5s 0.5s cubic-bezier(.5,1.6,.4,1) forwards, needleIdle 3s 3s ease-in-out infinite;
+  }
+  @keyframes needleSweep {
+    to { transform: rotate(45deg); }
+  }
+  @keyframes needleIdle {
+    0%,100% { transform: rotate(45deg); }
+    50%     { transform: rotate(30deg); }
+  }
+
+  /* Bag icon */
+  .bag-icon {
+    position: absolute;
+    top: 48%; left: 50%;
+    transform: translate(-50%, -55%);
+    width: 12%;
+    aspect-ratio: 1 / 1;
+    background: rgba(0,0,0,0.45);
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5;
+    animation: bagPop 1s 1.5s cubic-bezier(.5,1.8,.4,1) both, bagPulse 2.5s 2.5s ease-in-out infinite;
+  }
+  @keyframes bagPop {
+    from { opacity: 0; transform: translate(-50%,-55%) scale(0.3); }
+    to   { opacity: 1; transform: translate(-50%,-55%) scale(1); }
+  }
+  @keyframes bagPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(26,255,100,0.4); }
+    50%     { box-shadow: 0 0 0 12px rgba(26,255,100,0); }
+  }
+  .bag-icon svg { width: 60%; height: 60%; filter: drop-shadow(0 0 15px rgba(26,255,100,0.9)); }
+
+  /* Cars row */
+  .cars {
+    position: absolute;
+    bottom: 14%;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2%;
+    z-index: 4;
+    padding: 0 6%;
+  }
+  .car { position: relative; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.7)); }
+  .car svg { display: block; width: 100%; height: auto; }
+  .car.left  { width: 22%; animation: driveInLeft  1.2s 0.8s cubic-bezier(.3,1.4,.4,1) both, hover 3s 2s ease-in-out infinite; }
+  .car.center{ width: 30%; transform: translateY(-8px); z-index: 6; animation: driveInUp 1.2s 1s cubic-bezier(.3,1.4,.4,1) both, hover 3s 2.2s ease-in-out infinite; }
+  .car.right { width: 22%; animation: driveInRight 1.2s 0.8s cubic-bezier(.3,1.4,.4,1) both, hover 3s 2.4s ease-in-out infinite; }
+  @keyframes driveInLeft  { from { transform: translateX(-150%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes driveInRight { from { transform: translateX( 150%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes driveInUp    { from { transform: translateY( 100%); opacity: 0; } to { transform: translateY(-8px); opacity: 1; } }
+  @keyframes hover {
+    0%,100% { translate: 0 0; }
+    50%     { translate: 0 -4px; }
+  }
+
+  /* Sparkles */
+  .spark {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px 3px rgba(255,255,255,0.8);
+    z-index: 3;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.2; transform: scale(0.6); }
+    50%     { opacity: 1;   transform: scale(1.3); }
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 12%;
+    background: linear-gradient(90deg, #0f8a3c 0%, #1aa84a 50%, #0f8a3c 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9;
+    box-shadow: 0 -8px 25px rgba(26,168,74,0.4);
+    overflow: hidden;
+  }
+  .bottom-bar::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: translateX(-100%);
+    animation: shine 3s ease-in-out infinite;
+  }
+  @keyframes shine {
+    0%   { transform: translateX(-100%); }
+    60%  { transform: translateX(100%); }
+    100% { transform: translateX(100%); }
+  }
+  .bottom-bar .text {
+    color: #fff;
+    font-size: clamp(13px, 1.6vw, 19px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    z-index: 1;
+  }
+  .bottom-bar .text strong { color: #fff700; }
+
+  /* === MOBILE ADJUSTMENTS === */
+  @media (max-width: 640px) {
+    .headline { top: 28%; }
+    .headline .big { font-size: clamp(22px, 7vw, 32px); }
+    .headline .free { font-size: 10px; padding: 5px 12px; letter-spacing: 1.5px; margin-top: 8px; }
+    .countdown { top: 3%; right: 3%; padding: 6px 10px; }
+    .countdown .time { font-size: 12px; gap: 4px; }
+    .countdown .unit small { font-size: 7px; }
+    .speedometer { width: 75%; top: 58%; }
+    .cars { bottom: 18%; padding: 0 3%; gap: 1%; }
+    .car.left, .car.right { width: 24%; }
+    .car.center { width: 30%; }
+    .bag-icon { width: 14%; }
+    .arrow.left, .arrow.right {
+      border-top-width: 40px; border-bottom-width: 40px;
+    }
+    .arrow.left  { border-right-width: 50px; }
+    .arrow.right { border-left-width:  50px; }
+    .bottom-bar { height: 14%; padding: 0 8px; }
+    .bottom-bar .text { font-size: 11px; text-align: center; line-height: 1.25; letter-spacing: 0.3px; }
+  }
+</style>
+</head>
+<body>
+  <script>if (window.self === window.top) document.documentElement.querySelector('body')?.classList?.add?.('standalone'); document.addEventListener('DOMContentLoaded',()=>{ if(window.self===window.top) document.body.classList.add('standalone'); });</script>
+  <div class="banner">
+    <div class="grid-bg"></div>
+    <div class="glow"></div>
+    <div class="arrow left"></div>
+    <div class="arrow right"></div>
+
+    <div class="headline">
+      <div class="big">ACELERA Y <span>GANA</span></div>
+      <div class="free">SORTEO 100% GRATUITO</div>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <span class="label">ANUNCIO DE GANADORES</span>
+      <div class="time">
+        <div class="unit"><span id="cd-d">04</span><small>DÍAS</small></div>
+        <span class="sep">:</span>
+        <div class="unit"><span id="cd-h">06</span><small>HRS</small></div>
+        <span class="sep">:</span>
+        <div class="unit"><span id="cd-m">00</span><small>MIN</small></div>
+        <span class="sep">:</span>
+        <div class="unit"><span id="cd-s">00</span><small>SEG</small></div>
+      </div>
+    </div>
+
+    <!-- Speedometer -->
+    <div class="speedometer">
+      <svg viewBox="0 0 600 600">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#0a4d1f"/>
+            <stop offset="50%"  stop-color="#1aff64"/>
+            <stop offset="100%" stop-color="#fff700"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="6" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <circle cx="300" cy="300" r="270" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+        <circle cx="300" cy="300" r="250" fill="none" stroke="rgba(26,255,100,0.25)" stroke-width="1"/>
+
+        <path d="M 90 380 A 220 220 0 1 1 510 380" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="20" stroke-linecap="round"/>
+        <path class="gauge-arc" d="M 90 380 A 220 220 0 1 1 510 380" fill="none" stroke="url(#grad1)" stroke-width="14" stroke-linecap="round" filter="url(#glow)"/>
+
+        <g font-family="Montserrat" font-weight="700" fill="#fff" text-anchor="middle" font-size="22">
+          <text x="90" y="420">0</text>
+          <text x="120" y="240">40</text>
+          <text x="220" y="120">80</text>
+          <text x="300" y="90">120</text>
+          <text x="380" y="120">160</text>
+          <text x="480" y="240">200</text>
+          <text x="510" y="420">240</text>
+        </g>
+
+        <g class="needle" filter="url(#glow)">
+          <line x1="300" y1="300" x2="300" y2="110" stroke="#1aff64" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="300" cy="300" r="18" fill="#1aff64"/>
+          <circle cx="300" cy="300" r="9"  fill="#062612"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="bag-icon">
+      <svg viewBox="0 0 100 100">
+        <path d="M25 35 L75 35 L70 90 L30 90 Z" fill="none" stroke="#1aff64" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M35 35 Q35 18 50 18 Q65 18 65 35" fill="none" stroke="#1aff64" stroke-width="5"/>
+        <path d="M38 60 L46 68 L62 50" fill="none" stroke="#1aff64" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Cars -->
+    <div class="cars">
+      <div class="car left">
+        <svg viewBox="0 0 360 220">
+          <defs>
+            <linearGradient id="b1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5f5f5"/><stop offset="1" stop-color="#a8a8a8"/></linearGradient>
+            <linearGradient id="w1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1a1a"/><stop offset="1" stop-color="#3a3a3a"/></linearGradient>
+          </defs>
+          <ellipse cx="180" cy="195" rx="170" ry="10" fill="rgba(0,0,0,0.5)"/>
+          <path d="M30 150 Q40 90 110 80 L240 75 Q300 80 330 130 L335 165 Q335 175 325 175 L35 175 Q25 175 25 165 Z" fill="url(#b1)"/>
+          <path d="M70 150 Q80 100 130 95 L230 92 Q270 95 290 140 Z" fill="url(#w1)"/>
+          <line x1="170" y1="92" x2="170" y2="148" stroke="#666" stroke-width="2"/>
+          <circle cx="90" cy="180" r="22" fill="#111"/><circle cx="90" cy="180" r="10" fill="#444"/>
+          <circle cx="270" cy="180" r="22" fill="#111"/><circle cx="270" cy="180" r="10" fill="#444"/>
+          <rect x="305" y="140" width="20" height="10" rx="3" fill="#fff700"/>
+        </svg>
+      </div>
+
+      <div class="car center">
+        <svg viewBox="0 0 480 280">
+          <defs>
+            <linearGradient id="b2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient>
+            <linearGradient id="w2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a0a"/><stop offset="1" stop-color="#2a2a2a"/></linearGradient>
+          </defs>
+          <ellipse cx="240" cy="250" rx="230" ry="14" fill="rgba(0,0,0,0.6)"/>
+          <path d="M30 190 L30 150 Q40 90 130 80 L240 75 Q280 78 300 110 L300 150 L450 150 L455 200 Q455 215 440 215 L40 215 Q25 215 25 200 Z" fill="url(#b2)"/>
+          <path d="M75 145 Q85 100 140 95 L240 92 Q270 95 285 130 L285 145 Z" fill="url(#w2)"/>
+          <line x1="180" y1="92" x2="180" y2="145" stroke="#666" stroke-width="2"/>
+          <rect x="305" y="155" width="140" height="55" fill="#888" stroke="#555" stroke-width="2"/>
+          <circle cx="110" cy="220" r="32" fill="#0a0a0a"/><circle cx="110" cy="220" r="14" fill="#3a3a3a"/>
+          <circle cx="370" cy="220" r="32" fill="#0a0a0a"/><circle cx="370" cy="220" r="14" fill="#3a3a3a"/>
+          <rect x="420" y="170" width="30" height="14" rx="3" fill="#fff700"/>
+          <rect x="430" y="190" width="22" height="10" rx="2" fill="#333"/>
+        </svg>
+      </div>
+
+      <div class="car right">
+        <svg viewBox="0 0 360 220">
+          <defs>
+            <linearGradient id="b3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0f0f0"/><stop offset="1" stop-color="#9c9c9c"/></linearGradient>
+            <linearGradient id="w3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#161616"/><stop offset="1" stop-color="#383838"/></linearGradient>
+          </defs>
+          <ellipse cx="180" cy="195" rx="170" ry="10" fill="rgba(0,0,0,0.5)"/>
+          <path d="M30 150 Q40 95 110 85 L235 80 Q295 85 325 130 L335 165 Q335 175 325 175 L35 175 Q25 175 25 165 Z" fill="url(#b3)"/>
+          <path d="M70 148 Q80 105 130 100 L225 97 Q265 100 285 140 Z" fill="url(#w3)"/>
+          <line x1="170" y1="98" x2="170" y2="146" stroke="#666" stroke-width="2"/>
+          <circle cx="90" cy="180" r="22" fill="#111"/><circle cx="90" cy="180" r="10" fill="#444"/>
+          <circle cx="270" cy="180" r="22" fill="#111"/><circle cx="270" cy="180" r="10" fill="#444"/>
+          <rect x="305" y="140" width="20" height="10" rx="3" fill="#fff700"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Sparkles -->
+    <div class="spark" style="top:18%;left:20%;"></div>
+    <div class="spark" style="top:25%;right:25%;width:6px;height:6px;animation-delay:.5s"></div>
+    <div class="spark" style="top:55%;left:12%;animation-delay:1s"></div>
+    <div class="spark" style="top:60%;right:15%;animation-delay:1.5s"></div>
+    <div class="spark" style="top:35%;left:48%;width:3px;height:3px;animation-delay:.8s"></div>
+    <div class="spark" style="top:70%;left:35%;animation-delay:1.2s"></div>
+    <div class="spark" style="top:30%;right:38%;animation-delay:.3s"></div>
+
+    <div class="bottom-bar">
+      <div class="text">Participa por <strong>premios increíbles</strong></div>
+    </div>
+  </div>
+
+  <script>
+    // Countdown timer: 4 days 6 hours from page load
+    (function() {
+      const target = Date.now() + ((4 * 24 + 6) * 60 * 60 * 1000);
+      const dEl = document.getElementById('cd-d');
+      const hEl = document.getElementById('cd-h');
+      const mEl = document.getElementById('cd-m');
+      const sEl = document.getElementById('cd-s');
+      const pad = n => String(Math.max(0, n)).padStart(2, '0');
+      function tick() {
+        const diff = Math.max(0, target - Date.now());
+        const s = Math.floor(diff / 1000);
+        const d = Math.floor(s / 86400);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sec = s % 60;
+        dEl.textContent = pad(d);
+        hEl.textContent = pad(h);
+        mEl.textContent = pad(m);
+        sEl.textContent = pad(sec);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
